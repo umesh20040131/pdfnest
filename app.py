@@ -64,6 +64,8 @@ def merge():
         merger = PdfMerger()
 
         for file in files:
+            if not file.filename:
+                continue
             filename = secure_filename(file.filename)
             filepath = os.path.join(UPLOAD_FOLDER, filename)
             file.save(filepath)
@@ -90,6 +92,9 @@ def protect():
 
         if not pdf_file or not password:
             return "Please upload a PDF and enter a password."
+
+        if not pdf_file.filename:
+            return "Invalid PDF file uploaded.", 400
 
         filename = secure_filename(pdf_file.filename)
         input_path = os.path.join(UPLOAD_FOLDER, filename)
